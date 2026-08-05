@@ -8,8 +8,8 @@ The application does **not** use WebView. An equirectangular image is mapped to 
 
 - Installable APK: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
 - Version: `1.0.0+1`
-- Size: 22,764,180 bytes (21.7 MB)
-- SHA-256: `EEEDD04510375F2577C3FDA26EDB4B8D28A5CC86CDFAA99DD3F0A228A63F774F`
+- Size: 23,416,091 bytes (22.3 MB)
+- SHA-256: `710F7AF20FC63DD8EC868CBA0F27BBD6D42D5993F7C940934D20BC014346F12C`
 - Android application ID: `com.nhahn.star_global_360`
 
 The submission APK is a release-mode build signed with a development key so it can be installed directly for evaluation. A production release would use a private upload/release key managed outside the repository.
@@ -111,6 +111,7 @@ The panoramas are stored locally because the assignment needs a self-contained d
 
 - Panorama images are 4096 x 2048 rather than their original 8K+ exports.
 - Optimized progressive JPEGs keep the two panorama assets near 2.5 MB combined.
+- Dedicated 1280-pixel JPEGs keep hotspot details sharp without loading full panoramas into the sheet.
 - Images and JSON are bundled locally, eliminating network latency and broken demo links.
 - The viewer limits zoom to a practical range of 1x to 3x.
 - Only the active panorama viewer is interactive; scene changes replace it through a short fade.
@@ -190,5 +191,7 @@ Both panorama HDRIs are provided by [Poly Haven](https://polyhaven.com/) under [
 
 - [Sculpture Exhibition](https://polyhaven.com/a/sculpture_exhibition) by Oliksiy Yakovlyev; resized and JPEG-optimized for this application.
 - [Urban Courtyard](https://polyhaven.com/a/urban_courtyard) by Greg Zaal; resized and JPEG-optimized for this application.
+
+The four hotspot detail images are AI-assisted reframes derived from these same CC0 panoramas, then resized and JPEG-optimized for mobile display.
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency and asset notices.

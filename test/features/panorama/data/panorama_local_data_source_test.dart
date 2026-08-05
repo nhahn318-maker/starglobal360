@@ -21,12 +21,19 @@ void main() {
             .where((hotspot) => hotspot.type == HotspotType.navigation),
         hasLength(2),
       );
-      expect(
-        panoramas
-            .expand((panorama) => panorama.hotspots)
-            .where((hotspot) => hotspot.imageAsset != null),
-        hasLength(4),
-      );
+      final hotspotImages =
+          panoramas
+              .expand((panorama) => panorama.hotspots)
+              .map((hotspot) => hotspot.imageAsset)
+              .whereType<String>()
+              .toSet();
+      expect(hotspotImages, hasLength(4));
+      for (final imageAsset in hotspotImages) {
+        expect(
+          (await rootBundle.load(imageAsset)).lengthInBytes,
+          greaterThan(0),
+        );
+      }
     },
   );
 
