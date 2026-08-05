@@ -159,48 +159,49 @@ class _HeroHeader extends StatelessWidget {
               ),
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 96, 24, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 7,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(99),
-                      border: Border.all(color: Colors.white24),
-                    ),
-                    child: const Text(
-                      'MINI VIRTUAL MUSEUM TOUR',
-                      style: TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.1,
-                      ),
-                    ),
+          Positioned(
+            left: 24,
+            right: 24,
+            bottom: 26,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 7,
                   ),
-                  const Spacer(),
-                  Text(
-                    'Explore beyond\nthe frame.',
-                    style: Theme.of(context).textTheme.displaySmall,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(99),
+                    border: Border.all(color: Colors.white24),
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Move through art and architecture in an immersive 360° experience.',
+                  child: const Text(
+                    'MINI VIRTUAL MUSEUM TOUR',
                     style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 15,
-                      height: 1.4,
+                      color: AppColors.gold,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.1,
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  'Explore beyond\nthe frame.',
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Move through art and architecture in an immersive 360° experience.',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -119,15 +119,19 @@ class PanoramaCard extends StatelessWidget {
                           color: AppColors.navy,
                         ),
                         const SizedBox(width: 6),
-                        Text(
-                          '${panorama.hotspots.length} interactive markers',
-                          style: const TextStyle(
-                            color: AppColors.navy,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
+                        Expanded(
+                          child: Text(
+                            '${panorama.hotspots.length} interactive markers',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: AppColors.navy,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(width: 8),
                         Container(
                           width: 44,
                           height: 44,
