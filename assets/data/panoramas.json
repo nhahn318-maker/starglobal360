@@ -1,0 +1,84 @@
+{
+  "panoramas": [
+    {
+      "id": "sculpture_gallery",
+      "title": "Sculpture Gallery",
+      "subtitle": "Indoor exhibition",
+      "description": "Step into a contemporary gallery filled with expressive sculptures and mixed-media works.",
+      "thumbnail": "assets/images/museum_gallery_thumb.jpg",
+      "image": "assets/panoramas/museum_gallery_360.jpg",
+      "initialView": {
+        "latitude": 0,
+        "longitude": 0,
+        "zoom": 1
+      },
+      "hotspots": [
+        {
+          "id": "gallery_horse",
+          "type": "info",
+          "latitude": -4,
+          "longitude": -18,
+          "title": "Wooden Horse",
+          "description": "A life-sized wooden horse anchors the center of the exhibition and draws the visitor into the room."
+        },
+        {
+          "id": "gallery_figures",
+          "type": "info",
+          "latitude": 1,
+          "longitude": 72,
+          "title": "Human Figures",
+          "description": "Figurative works explore posture, material, and the relationship between people and space."
+        },
+        {
+          "id": "gallery_to_courtyard",
+          "type": "navigation",
+          "latitude": -2,
+          "longitude": -145,
+          "title": "Continue Outside",
+          "description": "Leave the gallery and continue the tour in the urban courtyard.",
+          "targetPanoramaId": "urban_courtyard"
+        }
+      ]
+    },
+    {
+      "id": "urban_courtyard",
+      "title": "Urban Courtyard",
+      "subtitle": "Outdoor architecture",
+      "description": "Explore an open city courtyard framed by modern architecture, public art, and bright natural light.",
+      "thumbnail": "assets/images/urban_courtyard_thumb.jpg",
+      "image": "assets/panoramas/urban_courtyard_360.jpg",
+      "initialView": {
+        "latitude": 0,
+        "longitude": 70,
+        "zoom": 1
+      },
+      "hotspots": [
+        {
+          "id": "courtyard_statue",
+          "type": "info",
+          "latitude": -2,
+          "longitude": 75,
+          "title": "Courtyard Sculpture",
+          "description": "A public sculpture creates a visual landmark at the entrance to the courtyard."
+        },
+        {
+          "id": "courtyard_architecture",
+          "type": "info",
+          "latitude": 3,
+          "longitude": -112,
+          "title": "Contemporary Facade",
+          "description": "Glass, stone, and shaded walkways shape the public edge of this urban space."
+        },
+        {
+          "id": "courtyard_to_gallery",
+          "type": "navigation",
+          "latitude": -2,
+          "longitude": 145,
+          "title": "Return to Gallery",
+          "description": "Go back inside and revisit the sculpture exhibition.",
+          "targetPanoramaId": "sculpture_gallery"
+        }
+      ]
+    }
+  ]
+}
