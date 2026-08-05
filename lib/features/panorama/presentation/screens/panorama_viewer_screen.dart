@@ -148,7 +148,6 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
                     .toList(growable: false),
                 child: Image.asset(
                   panorama.imageAsset,
-                  fit: BoxFit.cover,
                   filterQuality: FilterQuality.medium,
                   semanticLabel: '${panorama.title} 360 panorama',
                 ),
@@ -168,9 +167,14 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
               ),
             ),
           ),
-          _ViewerAppBar(
-            panorama: panorama,
-            onBack: () => Navigator.of(context).pop(),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            child: _ViewerAppBar(
+              panorama: panorama,
+              onBack: () => Navigator.of(context).pop(),
+            ),
           ),
           Positioned(
             left: 16,
@@ -224,29 +228,14 @@ class _ViewerAppBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: Colors.white24),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      panorama.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      panorama.subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white60,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  panorama.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
@@ -351,20 +340,8 @@ class _LoadingOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return ColoredBox(
       color: AppColors.navy,
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(color: AppColors.gold),
-            const SizedBox(height: 18),
-            Text(
-              'Preparing the 360° view…',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: Colors.white70),
-            ),
-          ],
-        ),
+      child: const Center(
+        child: CircularProgressIndicator(color: AppColors.gold),
       ),
     );
   }

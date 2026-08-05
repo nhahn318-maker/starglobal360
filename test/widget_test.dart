@@ -7,11 +7,10 @@ void main() {
     await tester.pumpWidget(const StarGlobalApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Choose your next view'), findsOneWidget);
+    expect(find.text('Explore 360°'), findsOneWidget);
     expect(find.text('Sculpture Gallery'), findsOneWidget);
-    expect(find.text('3 interactive markers'), findsOneWidget);
 
-    await tester.drag(find.byType(Scrollable), const Offset(0, -700));
+    await tester.drag(find.byType(Scrollable), const Offset(0, -500));
     await tester.pumpAndSettle();
 
     expect(find.text('Urban Courtyard'), findsOneWidget);

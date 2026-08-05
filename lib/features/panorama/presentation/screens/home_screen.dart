@@ -58,37 +58,26 @@ class _HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverAppBar(
+        const SliverAppBar(
           pinned: true,
-          expandedHeight: 330,
+          expandedHeight: 190,
           backgroundColor: AppColors.navy,
           surfaceTintColor: Colors.transparent,
-          title: const _Brand(),
-          flexibleSpace: const FlexibleSpaceBar(background: _HeroHeader()),
+          title: _Brand(),
+          flexibleSpace: FlexibleSpaceBar(background: _HeroHeader()),
         ),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(20, 28, 20, 40),
-          sliver: SliverList.list(
-            children: [
-              Text(
-                'Choose your next view',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Two connected spaces. Six interactive stories. One seamless 360° tour.',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 24),
-              for (final panorama in panoramas) ...[
-                PanoramaCard(
-                  panorama: panorama,
-                  onExplore: () => onExplore(panorama),
-                ),
-                const SizedBox(height: 20),
-              ],
-              const _TechnicalNote(),
-            ],
+          padding: const EdgeInsets.fromLTRB(16, 18, 16, 32),
+          sliver: SliverList.separated(
+            itemCount: panoramas.length,
+            separatorBuilder: (_, _) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final panorama = panoramas[index];
+              return PanoramaCard(
+                panorama: panorama,
+                onExplore: () => onExplore(panorama),
+              );
+            },
           ),
         ),
       ],
@@ -104,15 +93,15 @@ class _Brand extends StatelessWidget {
     return const Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.blur_circular_rounded, color: AppColors.gold),
-        SizedBox(width: 10),
+        Icon(Icons.blur_circular_rounded, color: AppColors.gold, size: 22),
+        SizedBox(width: 9),
         Text(
-          'STAR EXPLORER',
+          'STAR 360',
           style: TextStyle(
             color: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w800,
-            letterSpacing: 1.5,
+            letterSpacing: 1.4,
           ),
         ),
       ],
@@ -130,110 +119,33 @@ class _HeroHeader extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.navy, AppColors.navySoft, Color(0xFF294A5C)],
+          colors: [AppColors.navy, AppColors.navySoft],
         ),
       ),
       child: Stack(
         children: [
           Positioned(
-            right: -70,
-            top: 48,
+            right: -48,
+            bottom: -68,
             child: Container(
-              width: 240,
-              height: 240,
+              width: 190,
+              height: 190,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white12, width: 24),
+                border: Border.all(color: Colors.white10, width: 22),
               ),
             ),
           ),
-          Positioned(
-            left: -40,
-            bottom: -70,
-            child: Container(
-              width: 180,
-              height: 180,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0x14E5B85C),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 24,
-            right: 24,
-            bottom: 26,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 7,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(99),
-                    border: Border.all(color: Colors.white24),
-                  ),
-                  child: const Text(
-                    'MINI VIRTUAL MUSEUM TOUR',
-                    style: TextStyle(
-                      color: AppColors.gold,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.1,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 22),
-                Text(
-                  'Explore beyond\nthe frame.',
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Move through art and architecture in an immersive 360° experience.',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 15,
-                    height: 1.4,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _TechnicalNote extends StatelessWidget {
-  const _TechnicalNote();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.65),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.navy.withValues(alpha: 0.08)),
-      ),
-      child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.speed_rounded, color: AppColors.navy),
-          SizedBox(width: 14),
-          Expanded(
+          const Positioned(
+            left: 20,
+            bottom: 22,
             child: Text(
-              'Rendered natively in Flutter. No WebView, no network connection required.',
+              'Explore 360°',
               style: TextStyle(
-                fontSize: 13,
-                height: 1.45,
-                color: AppColors.ink,
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.8,
               ),
             ),
           ),
