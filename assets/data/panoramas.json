@@ -16,8 +16,8 @@
         {
           "id": "gallery_horse",
           "type": "info",
-          "latitude": -12,
-          "longitude": 26,
+          "latitude": 1,
+          "longitude": 16,
           "title": "Wooden Horse",
           "description": "A life-sized wooden horse anchors the center of the exhibition and draws the visitor into the room.",
           "image": "assets/images/hotspot_wooden_horse.jpg"

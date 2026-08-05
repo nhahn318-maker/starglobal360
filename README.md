@@ -8,8 +8,8 @@ The application does **not** use WebView. An equirectangular image is mapped to 
 
 - Installable APK: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
 - Version: `1.0.0+1`
-- Size: 23,416,091 bytes (22.3 MB)
-- SHA-256: `710F7AF20FC63DD8EC868CBA0F27BBD6D42D5993F7C940934D20BC014346F12C`
+- Size: 23,416,079 bytes (22.3 MB)
+- SHA-256: `B15E5AF0972199AE42AC047B240DC37A5FF2DB29C25D0E26E746282CF5B05623`
 - Android application ID: `com.nhahn.star_global_360`
 
 The submission APK is a release-mode build signed with a development key so it can be installed directly for evaluation. A production release would use a private upload/release key managed outside the repository.
@@ -155,7 +155,7 @@ The generated file is `build/app/outputs/flutter-apk/app-release.apk`.
 - `flutter build apk --debug` - succeeded.
 - `flutter build apk --release` - succeeded.
 - APK checksum recorded above after copying the verified release artifact.
-- Physical-device pass on vivo V2041 (1080 x 2408): install, launch, full-screen render, pan gesture, information hotspot, and panorama navigation verified.
+- Physical-device pass on vivo V2041 (1080 x 2408): install, launch, full-screen render, pan gesture, calibrated hotspot alignment, image detail sheet, and panorama navigation verified.
 
 The connected-device pass confirmed the required flow on one Android model. A broader low-, mid-, and high-range device matrix would still be required before production release.
 
