@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="star_global_360"
+        android:label="Star Explorer 360"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
