@@ -21,6 +21,12 @@ void main() {
             .where((hotspot) => hotspot.type == HotspotType.navigation),
         hasLength(2),
       );
+      expect(
+        panoramas
+            .expand((panorama) => panorama.hotspots)
+            .where((hotspot) => hotspot.imageAsset != null),
+        hasLength(4),
+      );
     },
   );
 

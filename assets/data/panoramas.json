@@ -19,7 +19,8 @@
           "latitude": -4,
           "longitude": -18,
           "title": "Wooden Horse",
-          "description": "A life-sized wooden horse anchors the center of the exhibition and draws the visitor into the room."
+          "description": "A life-sized wooden horse anchors the center of the exhibition and draws the visitor into the room.",
+          "image": "assets/images/museum_gallery_thumb.jpg"
         },
         {
           "id": "gallery_figures",
@@ -27,7 +28,8 @@
           "latitude": 1,
           "longitude": 72,
           "title": "Human Figures",
-          "description": "Figurative works explore posture, material, and the relationship between people and space."
+          "description": "Figurative works explore posture, material, and the relationship between people and space.",
+          "image": "assets/images/museum_gallery_thumb.jpg"
         },
         {
           "id": "gallery_to_courtyard",
@@ -59,7 +61,8 @@
           "latitude": -2,
           "longitude": 75,
           "title": "Courtyard Sculpture",
-          "description": "A public sculpture creates a visual landmark at the entrance to the courtyard."
+          "description": "A public sculpture creates a visual landmark at the entrance to the courtyard.",
+          "image": "assets/images/urban_courtyard_thumb.jpg"
         },
         {
           "id": "courtyard_architecture",
@@ -67,7 +70,8 @@
           "latitude": 3,
           "longitude": -112,
           "title": "Contemporary Facade",
-          "description": "Glass, stone, and shaded walkways shape the public edge of this urban space."
+          "description": "Glass, stone, and shaded walkways shape the public edge of this urban space.",
+          "image": "assets/images/urban_courtyard_thumb.jpg"
         },
         {
           "id": "courtyard_to_gallery",

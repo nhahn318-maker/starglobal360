@@ -8,8 +8,8 @@ The application does **not** use WebView. An equirectangular image is mapped to 
 
 - Installable APK: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
 - Version: `1.0.0+1`
-- Size: 22,744,871 bytes (21.7 MB)
-- SHA-256: `5D3BB5D8DB181CC66177DFDA4E2029604F48ED17A4E4A6F7538FCA6617BA01C1`
+- Size: 22,764,180 bytes (21.7 MB)
+- SHA-256: `EEEDD04510375F2577C3FDA26EDB4B8D28A5CC86CDFAA99DD3F0A228A63F774F`
 - Android application ID: `com.nhahn.star_global_360`
 
 The submission APK is a release-mode build signed with a development key so it can be installed directly for evaluation. A production release would use a private upload/release key managed outside the repository.
@@ -19,7 +19,7 @@ The submission APK is a release-mode build signed with a development key so it c
 - Home screen backed by local JSON data.
 - Two connected 4096 x 2048 equirectangular panoramas.
 - Three spherical hotspots per panorama (six total).
-- Four information hotspots with accessible bottom sheets.
+- Four information hotspots with optional local images and accessible bottom sheets.
 - Two navigation hotspots with a fade transition between panoramas.
 - Drag-to-pan and pinch-to-zoom interaction.
 - First-use gesture guidance, loading feedback, reset-view control, and error/retry state.
@@ -77,7 +77,7 @@ Panorama content is not hard-coded in widgets. Each JSON record provides:
 - identity, title, subtitle, and description;
 - thumbnail and equirectangular asset paths;
 - initial latitude, longitude, and zoom;
-- a list of information or navigation hotspots;
+- a list of information or navigation hotspots, with an optional local image;
 - an optional target panorama ID for navigation hotspots.
 
 The repository validates relationships after parsing. This structure can be moved to a REST API or local database without rewriting presentation widgets.

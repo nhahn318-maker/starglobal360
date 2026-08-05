@@ -19,6 +19,7 @@ final class HotspotModel {
     required this.longitude,
     required this.title,
     required this.description,
+    this.imageAsset,
     this.targetPanoramaId,
   });
 
@@ -39,6 +40,7 @@ final class HotspotModel {
       longitude: _coordinate(json, 'longitude', min: -180, max: 180),
       title: _requiredString(json, 'title'),
       description: _requiredString(json, 'description'),
+      imageAsset: _optionalString(json, 'image'),
       targetPanoramaId: targetPanoramaId,
     );
   }
@@ -49,12 +51,24 @@ final class HotspotModel {
   final double longitude;
   final String title;
   final String description;
+  final String? imageAsset;
   final String? targetPanoramaId;
 
   static String _requiredString(Map<String, dynamic> json, String key) {
     final value = json[key];
     if (value is! String || value.trim().isEmpty) {
       throw FormatException('$key must be a non-empty string.');
+    }
+    return value;
+  }
+
+  static String? _optionalString(Map<String, dynamic> json, String key) {
+    final value = json[key];
+    if (value == null) {
+      return null;
+    }
+    if (value is! String || value.trim().isEmpty) {
+      throw FormatException('$key must be a non-empty string when provided.');
     }
     return value;
   }
