@@ -1,36 +1,43 @@
 # Star Explorer 360
 
-Star Explorer 360 is a native Flutter mini virtual tour created for the StarGlobal Mobile App Intern technical test. It connects an indoor sculpture gallery and an outdoor urban courtyard through interactive 360-degree panoramas.
+Star Explorer 360 là ứng dụng tham quan không gian 360 độ được xây dựng bằng Flutter cho bài kiểm tra Thực tập sinh Lập trình App Mobile của StarGlobal.
 
-The application does **not** use WebView. An equirectangular image is mapped to a spherical mesh by `panorama_viewer` and rendered through Flutter's graphics pipeline. Hotspots use spherical latitude/longitude coordinates, so they remain attached to their scene while the user pans or zooms.
+Ứng dụng có hai địa điểm: phòng trưng bày điêu khắc và sân kiến trúc ngoài trời. Người dùng có thể vuốt để quan sát, phóng to hoặc thu nhỏ, mở thông tin tại các hotspot và chuyển giữa hai panorama.
+
+Ứng dụng không sử dụng WebView và có thể hoạt động hoàn toàn offline sau khi cài đặt.
 
 ## APK
 
-- Installable APK: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
-- Version: `1.0.0+1`
-- Size: 23,416,079 bytes (22.3 MB)
+- File cài đặt: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
+- Phiên bản: `1.0.0+1`
+- Dung lượng: 23.416.079 byte (22,3 MB)
 - SHA-256: `B15E5AF0972199AE42AC047B240DC37A5FF2DB29C25D0E26E746282CF5B05623`
 - Android application ID: `com.nhahn.star_global_360`
 
-The submission APK is a release-mode build signed with a development key so it can be installed directly for evaluation. A production release would use a private upload/release key managed outside the repository.
+APK được build ở chế độ release và có thể cài trực tiếp để chấm bài.
 
-## Completed features
+## Tính năng đã hoàn thành
 
-- Home screen backed by local JSON data.
-- Two connected 4096 x 2048 equirectangular panoramas.
-- Three spherical hotspots per panorama (six total).
-- Four information hotspots with optional local images and accessible bottom sheets.
-- Two navigation hotspots with a fade transition between panoramas.
-- Drag-to-pan and pinch-to-zoom interaction.
-- First-use gesture guidance, loading feedback, reset-view control, and error/retry state.
-- Responsive Material 3 interface and custom Android launcher icon.
-- Offline operation after installation; no API or network access is required.
-- JSON validation for required fields, coordinate ranges, duplicate IDs, and navigation targets.
-- Unit/widget tests plus clean static analysis.
+- Màn hình Home hiển thị danh sách địa điểm.
+- Hai ảnh panorama 360 độ, kích thước `4096 x 2048`.
+- Mỗi panorama có 3 hotspot, tổng cộng 6 hotspot.
+- 4 hotspot thông tin có tiêu đề, mô tả và hình ảnh.
+- 2 hotspot điều hướng để chuyển giữa các panorama.
+- Có hiệu ứng mờ dần khi chuyển panorama.
+- Vuốt để xoay góc nhìn.
+- Chụm hai ngón tay để phóng to hoặc thu nhỏ.
+- Hotspot giữ đúng vị trí khi panorama xoay hoặc zoom.
+- Có hướng dẫn thao tác lần đầu.
+- Có trạng thái tải ảnh, báo lỗi và thử lại.
+- Có nút đặt lại góc nhìn.
+- Giao diện Material 3 tối giản và responsive.
+- Có launcher icon riêng cho Android.
+- Dữ liệu và hình ảnh được lưu cục bộ, không cần Internet.
+- Có kiểm tra dữ liệu JSON và test tự động.
 
-## Architecture
+## Kiến trúc dự án
 
-The project uses a lightweight feature-first structure. It keeps data parsing, validation, state, and presentation separate without adding unnecessary domain abstractions for a two-screen application.
+Dự án sử dụng cấu trúc feature-first. Phần dữ liệu, trạng thái và giao diện được tách riêng để code dễ đọc và dễ mở rộng.
 
 ```text
 lib/
@@ -58,80 +65,167 @@ assets/
 `-- panoramas/
 ```
 
-Data flow:
+Luồng dữ liệu của ứng dụng:
 
 ```text
-assets/data/panoramas.json
-        -> PanoramaLocalDataSource
-        -> PanoramaRepository (cross-record validation)
-        -> PanoramaCatalogController (UI state)
-        -> HomeScreen / PanoramaViewerScreen
+panoramas.json
+    -> PanoramaLocalDataSource
+    -> PanoramaRepository
+    -> PanoramaCatalogController
+    -> HomeScreen / PanoramaViewerScreen
 ```
 
-`PanoramaCatalogController` uses Flutter's built-in `ChangeNotifier`, so this small project does not need an additional state-management package. Dependencies are constructed explicitly in `app.dart`, keeping ownership and disposal easy to follow.
+- `PanoramaLocalDataSource` đọc file JSON.
+- `PanoramaRepository` kiểm tra quan hệ giữa panorama và hotspot.
+- `PanoramaCatalogController` quản lý trạng thái cho giao diện.
+- `HomeScreen` và `PanoramaViewerScreen` hiển thị dữ liệu cho người dùng.
 
-## Data model
+Dự án dùng `ChangeNotifier` có sẵn trong Flutter. Với ứng dụng chỉ có hai màn hình, cách này đơn giản và không cần thêm thư viện quản lý trạng thái.
 
-Panorama content is not hard-coded in widgets. Each JSON record provides:
+## Quản lý dữ liệu
 
-- identity, title, subtitle, and description;
-- thumbnail and equirectangular asset paths;
-- initial latitude, longitude, and zoom;
-- a list of information or navigation hotspots, with an optional local image;
-- an optional target panorama ID for navigation hotspots.
+Thông tin panorama và hotspot được quản lý trong file [`assets/data/panoramas.json`](assets/data/panoramas.json), không viết trực tiếp trong widget.
 
-The repository validates relationships after parsing. This structure can be moved to a REST API or local database without rewriting presentation widgets.
+Mỗi panorama gồm:
 
-## Technical research
+- ID, tiêu đề, phụ đề và mô tả.
+- Ảnh thumbnail và ảnh panorama.
+- Góc nhìn và mức zoom ban đầu.
+- Danh sách hotspot.
 
-### Research process
+Mỗi hotspot gồm:
 
-1. Read the test requirements and separated mandatory behavior from optional product features.
-2. Reviewed the equirectangular photo-sphere format and spherical heading/pitch conventions.
-3. Compared a WebView-based JavaScript viewer with a Flutter-rendered sphere.
-4. Verified that `panorama_viewer` supports gestures, zoom, spherical hotspots, image-load events, and controller operations.
-5. Tested the JSON/data boundary independently before connecting the UI.
-6. Reduced source HDRIs to 4096 x 2048 JPEGs and verified Android debug/release compilation.
+- ID và loại hotspot.
+- Tọa độ `latitude` và `longitude`.
+- Tiêu đề và mô tả.
+- Hình ảnh tùy chọn.
+- ID panorama đích nếu là hotspot điều hướng.
 
-### References
+Ứng dụng kiểm tra các lỗi dữ liệu như thiếu trường bắt buộc, ID trùng, tọa độ sai phạm vi hoặc panorama đích không tồn tại.
 
-- [Google Photo Sphere XMP metadata](https://developers.google.com/streetview/spherical-metadata) - equirectangular projection and orientation conventions.
-- [`panorama_viewer` package](https://pub.dev/packages/panorama_viewer) - package overview, platform support, and license.
-- [`PanoramaViewer` API](https://pub.dev/documentation/panorama_viewer/latest/panorama_viewer/PanoramaViewer-class.html) - gesture, zoom, view, and hotspot configuration.
-- [`Hotspot` API](https://pub.dev/documentation/panorama_viewer/latest/panorama_viewer/Hotspot-class.html) - latitude/longitude placement.
-- [Flutter assets documentation](https://docs.flutter.dev/ui/assets/assets-and-images) - local JSON and image bundling.
+## Thư viện sử dụng
 
-## Why this solution
-
-`panorama_viewer` 2.0.7 provides the required interaction with a small, understandable API and no embedded browser. It builds on `flutter_cube` to render a textured sphere and exposes hotspots in spherical coordinates. This directly addresses the highest-risk parts of the assignment while leaving time for data validation, UI polish, tests, documentation, and a verified APK.
-
-The panoramas are stored locally because the assignment needs a self-contained demo, not a content backend. Keeping the data source behind a repository makes a later API migration straightforward.
-
-## Performance decisions
-
-- Panorama images are 4096 x 2048 rather than their original 8K+ exports.
-- Optimized progressive JPEGs keep the two panorama assets near 2.5 MB combined.
-- Dedicated 1280-pixel JPEGs keep hotspot details sharp without loading full panoramas into the sheet.
-- Images and JSON are bundled locally, eliminating network latency and broken demo links.
-- The viewer limits zoom to a practical range of 1x to 3x.
-- Only the active panorama viewer is interactive; scene changes replace it through a short fade.
-
-## Dependencies
-
-| Package | Version | Purpose |
+| Thư viện | Phiên bản | Mục đích |
 |---|---:|---|
-| Flutter SDK | 3.29.3 (local build) | UI, navigation, assets, and state primitives |
-| `panorama_viewer` | 2.0.7 | Spherical panorama rendering, gestures, zoom, and hotspots |
+| Flutter SDK | 3.29.3 | Xây dựng giao diện, điều hướng và quản lý tài nguyên |
+| `panorama_viewer` | 2.0.7 | Render panorama, xử lý xoay, zoom và hotspot |
 
-`panorama_viewer` transitively uses `flutter_cube` and `dchs_motion_sensors`. Sensor control is disabled in this version of the tour; the user controls the view with touch gestures.
+`panorama_viewer` sử dụng `flutter_cube` ở bên trong để tạo bề mặt hình cầu. Chế độ cảm biến được tắt trong phiên bản hiện tại; người dùng điều khiển góc nhìn bằng thao tác chạm.
 
-## Run locally
+## Báo cáo nghiên cứu
 
-Prerequisites:
+### 1. Quá trình nghiên cứu
 
-- Flutter 3.29 or newer
-- Dart 3.7 or newer
-- Android SDK with an emulator or physical Android device
+#### Tôi đã nghiên cứu vấn đề như thế nào?
+
+1. Đọc đề bài và chia yêu cầu thành hai nhóm: bắt buộc và khuyến khích.
+2. Tìm hiểu định dạng ảnh equirectangular dùng cho panorama 360 độ. Đây là ảnh có tỷ lệ 2:1 và được chiếu lên mặt trong của một hình cầu.
+3. So sánh hai hướng triển khai: mở trình xem panorama bằng WebView hoặc render trực tiếp trong Flutter.
+4. Kiểm tra các thư viện Flutter có hỗ trợ vuốt, zoom, hotspot và tọa độ hình cầu.
+5. Chọn `panorama_viewer` và làm thử phần đọc JSON trước khi xây dựng giao diện.
+6. Tối ưu ảnh panorama về `4096 x 2048` để giảm dung lượng và bộ nhớ sử dụng.
+7. Build ứng dụng và kiểm tra trực tiếp trên điện thoại vivo V2041.
+8. Dùng công cụ hiệu chỉnh của viewer để đặt hotspot đúng lên từng vật thể.
+
+#### Tài liệu đã tham khảo
+
+- [Google Photo Sphere metadata](https://developers.google.com/streetview/spherical-metadata): tìm hiểu ảnh equirectangular và hướng của panorama.
+- [`panorama_viewer` trên pub.dev](https://pub.dev/packages/panorama_viewer): kiểm tra tính năng, nền tảng hỗ trợ và giấy phép.
+- [`PanoramaViewer` API](https://pub.dev/documentation/panorama_viewer/latest/panorama_viewer/PanoramaViewer-class.html): tìm hiểu cách xoay, zoom, đặt góc nhìn và bắt sự kiện.
+- [`Hotspot` API](https://pub.dev/documentation/panorama_viewer/latest/panorama_viewer/Hotspot-class.html): tìm hiểu cách đặt hotspot bằng latitude và longitude.
+- [Flutter assets](https://docs.flutter.dev/ui/assets/assets-and-images): tìm hiểu cách đóng gói JSON và hình ảnh trong ứng dụng.
+
+### 2. Giải pháp lựa chọn
+
+#### Vì sao tôi chọn giải pháp này?
+
+Tôi chọn Flutter kết hợp với `panorama_viewer` vì thư viện có thể render panorama trực tiếp mà không cần WebView. Thư viện cũng hỗ trợ sẵn các thao tác quan trọng như vuốt, zoom và đặt hotspot bằng tọa độ hình cầu.
+
+Giải pháp này có API tương đối nhỏ, dễ đọc và phù hợp với thời gian làm bài test. Nhờ đó tôi có thể tập trung thêm vào giao diện, kiểm tra dữ liệu, xử lý lỗi, test và tài liệu.
+
+Dữ liệu được lưu bằng local JSON vì bài test cần một bản demo tự chứa và không bắt buộc backend. Data source và repository được tách riêng nên sau này có thể chuyển sang REST API hoặc local database mà không phải viết lại phần giao diện.
+
+#### Giải pháp đáp ứng được những yêu cầu nào?
+
+- Sử dụng Flutter và chạy trên Android.
+- Không sử dụng WebView.
+- Hiển thị panorama 360 độ.
+- Vuốt để xoay và chụm để zoom.
+- Hotspot bám đúng vị trí trong panorama.
+- Hotspot có thể mở thông tin gồm tiêu đề, mô tả và hình ảnh.
+- Hotspot có thể chuyển sang panorama khác.
+- Có hiệu ứng chuyển cảnh.
+- Dữ liệu được quản lý bằng JSON.
+- Có 2 panorama và mỗi panorama có 3 hotspot.
+- Có màn hình Home và Panorama Viewer.
+- Có source code, APK và README.
+
+### 3. Đánh giá
+
+#### Ưu điểm
+
+- Không dùng WebView nên trải nghiệm đồng nhất với ứng dụng Flutter.
+- Ứng dụng hoạt động offline, không phụ thuộc đường truyền mạng.
+- Ảnh panorama đã được tối ưu để tải nhanh hơn và giảm bộ nhớ.
+- Hotspot dùng tọa độ hình cầu nên không bị trôi khi xoay hoặc zoom.
+- Nội dung được quản lý bằng JSON, dễ thêm panorama và hotspot mới.
+- Cấu trúc thư mục gọn và các phần có trách nhiệm rõ ràng.
+- Giao diện tối giản, tập trung vào nội dung 360 độ.
+- Có xử lý loading, lỗi dữ liệu và lỗi hình ảnh.
+- Có test tự động và đã kiểm tra trên điện thoại thật.
+
+#### Hạn chế
+
+- Dữ liệu đang đóng gói trong ứng dụng nên muốn thay đổi nội dung phải build APK mới.
+- Chưa có cơ chế chia ảnh thành nhiều mức độ phân giải cho panorama rất lớn.
+- Chưa có backend hoặc hệ thống quản trị nội dung.
+- Chế độ điều khiển bằng gyroscope đang được tắt.
+- Hiện tại mới kiểm tra trên một mẫu điện thoại Android.
+- Chưa có bản iOS.
+- APK đang dùng development key để phục vụ việc chấm bài, chưa dùng production signing key.
+
+#### Khó khăn gặp phải
+
+- Ảnh panorama gốc có dung lượng lớn, vì vậy cần giảm kích thước nhưng vẫn giữ đúng tỷ lệ 2:1.
+- Hotspot phải bám đúng vật thể khi người dùng xoay. Tôi giải quyết bằng tọa độ latitude và longitude thay vì tọa độ màn hình.
+- Tọa độ hotspot ban đầu chưa chính xác. Tôi đã cài app lên điện thoại, chạm trực tiếp lên vật thể để lấy tọa độ và hiệu chỉnh lại.
+- Bottom sheet có hình ảnh từng bị tràn trên màn hình thấp. Nội dung đã được chuyển sang dạng có thể cuộn.
+- Viewer từng chỉ hiển thị ở phần trên màn hình. Lỗi được sửa bằng cách điều chỉnh lại `Stack` và app bar overlay.
+
+### 4. Hướng phát triển
+
+Nếu có thêm thời gian, tôi sẽ cải tiến ứng dụng theo thứ tự sau:
+
+1. Thêm integration test cho luồng Home, Viewer, mở hotspot và chuyển panorama.
+2. Kiểm tra hiệu năng trên nhiều thiết bị Android cấu hình thấp, trung bình và cao.
+3. Thêm API quản lý nội dung, có cache để vẫn sử dụng được khi mất mạng.
+4. Sử dụng panorama nhiều mức độ phân giải để tải ảnh lớn nhanh hơn.
+5. Thêm chế độ gyroscope và nút bật hoặc tắt rõ ràng.
+6. Thêm mini-map và tour tự động theo từng điểm.
+7. Bổ sung Favorite và History nếu phù hợp với sản phẩm thực tế.
+8. Thêm analytics để theo dõi lượt mở hotspot và chuyển panorama.
+9. Build phiên bản iOS.
+10. Kiểm tra accessibility bằng TalkBack và VoiceOver.
+
+## Tối ưu hiệu năng
+
+- Hai panorama được giảm về `4096 x 2048` thay vì dùng ảnh gốc trên 8K.
+- Hai ảnh panorama sau tối ưu có tổng dung lượng khoảng 2,5 MB.
+- Ảnh chi tiết hotspot rộng 1280 pixel và được nén riêng.
+- Toàn bộ JSON và hình ảnh được lưu cục bộ nên không có độ trễ mạng.
+- Zoom được giới hạn trong khoảng `1x` đến `3x`.
+- Mỗi thời điểm chỉ có panorama đang xem được tương tác.
+
+## Cách chạy project
+
+Yêu cầu:
+
+- Flutter 3.29 hoặc mới hơn.
+- Dart 3.7 hoặc mới hơn.
+- Android SDK.
+- Máy ảo Android hoặc điện thoại Android đã bật USB debugging.
+
+Chạy các lệnh:
 
 ```bash
 flutter pub get
@@ -140,58 +234,34 @@ flutter test
 flutter run
 ```
 
-Build an installable release APK:
+Build APK release:
 
 ```bash
 flutter build apk --release
 ```
 
-The generated file is `build/app/outputs/flutter-apk/app-release.apk`.
+APK sau khi build nằm tại:
 
-## Verification performed
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
 
-- `flutter analyze` - no issues.
-- `flutter test` - all tests passed.
-- `flutter build apk --debug` - succeeded.
-- `flutter build apk --release` - succeeded.
-- APK checksum recorded above after copying the verified release artifact.
-- Physical-device pass on vivo V2041 (1080 x 2408): install, launch, full-screen render, pan gesture, calibrated hotspot alignment, image detail sheet, and panorama navigation verified.
+## Kết quả kiểm thử
 
-The connected-device pass confirmed the required flow on one Android model. A broader low-, mid-, and high-range device matrix would still be required before production release.
+- `flutter analyze`: không có lỗi.
+- `flutter test`: 4 test đều thành công.
+- `flutter build apk --debug`: thành công.
+- `flutter build apk --release`: thành công.
+- Đã cài và kiểm tra trên vivo V2041, độ phân giải `1080 x 2408`.
+- Đã kiểm tra hiển thị toàn màn hình, thao tác vuốt, vị trí hotspot, popup hình ảnh và chuyển panorama.
 
-## Challenges and trade-offs
+## Nguồn hình ảnh
 
-- **Stable hotspot placement:** screen-space overlays would drift. Spherical latitude/longitude hotspots keep markers tied to panorama content.
-- **Image memory:** original HDRIs were much larger than needed for a mobile demo. They were downscaled while preserving the 2:1 projection.
-- **Scope control:** search, favorites, maps, authentication, and a backend were intentionally excluded so the required viewer could be complete and testable.
-- **Package dependency:** the viewer depends on a third-party rendering package. The app isolates it in one screen so it can be replaced without changing the catalog/data layer.
+Hai panorama gốc được cung cấp bởi [Poly Haven](https://polyhaven.com/) với giấy phép [CC0](https://polyhaven.com/license).
 
-## Current limitations
+- [Sculpture Exhibition](https://polyhaven.com/a/sculpture_exhibition) của Oliksiy Yakovlyev.
+- [Urban Courtyard](https://polyhaven.com/a/urban_courtyard) của Greg Zaal.
 
-- Panorama content is bundled and cannot be updated remotely.
-- There is no multi-resolution tile streaming for very large scenes.
-- Hotspot positions are demo content and should receive a final pass on representative physical devices.
-- Gyroscope control is intentionally disabled.
-- The current submission targets Android only.
-- Production signing, Play Store configuration, and device-matrix benchmarking are outside this test build.
+Bốn ảnh chi tiết hotspot được tạo lại từ các panorama CC0 trên với sự hỗ trợ của AI, sau đó được giảm kích thước và nén cho thiết bị di động.
 
-## Future improvements
-
-- API-backed content management with caching and offline fallback.
-- Multi-resolution panorama tiles for faster loading of high-resolution scenes.
-- Optional gyroscope mode with a clear permission and calibration flow.
-- Mini-map, guided auto-tour, favorites, and visit history.
-- Analytics for hotspot engagement and scene transitions.
-- Integration tests on low-, mid-, and high-range Android devices.
-- iOS target and accessibility testing with screen readers.
-
-## Asset credits
-
-Both panorama HDRIs are provided by [Poly Haven](https://polyhaven.com/) under [CC0](https://polyhaven.com/license). Attribution is not required by CC0 but is included in appreciation of the creators.
-
-- [Sculpture Exhibition](https://polyhaven.com/a/sculpture_exhibition) by Oliksiy Yakovlyev; resized and JPEG-optimized for this application.
-- [Urban Courtyard](https://polyhaven.com/a/urban_courtyard) by Greg Zaal; resized and JPEG-optimized for this application.
-
-The four hotspot detail images are AI-assisted reframes derived from these same CC0 panoramas, then resized and JPEG-optimized for mobile display.
-
-See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency and asset notices.
+Xem thêm thông tin về thư viện và tài nguyên tại [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
