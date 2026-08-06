@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:panorama_viewer/panorama_viewer.dart';
 import 'package:star_global_360/app/theme.dart';
@@ -8,7 +6,6 @@ import 'package:star_global_360/features/panorama/data/models/panorama_model.dar
 import 'package:star_global_360/features/panorama/presentation/controllers/panorama_catalog_controller.dart';
 import 'package:star_global_360/features/panorama/presentation/widgets/hotspot_detail_sheet.dart';
 import 'package:star_global_360/features/panorama/presentation/widgets/panorama_hotspot_marker.dart';
-import 'package:star_global_360/features/panorama/presentation/widgets/viewer_instruction_overlay.dart';
 
 class PanoramaViewerScreen extends StatefulWidget {
   const PanoramaViewerScreen({
@@ -27,9 +24,6 @@ class PanoramaViewerScreen extends StatefulWidget {
 class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
   late String _currentPanoramaId;
   bool _isImageLoading = true;
-  bool _showInstructions = true;
-  int _viewerRevision = 0;
-  Timer? _instructionTimer;
 
   PanoramaModel get _currentPanorama {
     return widget.controller.findById(_currentPanoramaId)!;
@@ -39,30 +33,6 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
   void initState() {
     super.initState();
     _currentPanoramaId = widget.initialPanoramaId;
-    _instructionTimer = Timer(const Duration(seconds: 7), _dismissInstructions);
-  }
-
-  @override
-  void dispose() {
-    _instructionTimer?.cancel();
-    super.dispose();
-  }
-
-  void _dismissInstructions() {
-    if (!mounted || !_showInstructions) return;
-    setState(() => _showInstructions = false);
-  }
-
-  void _showHelp() {
-    _instructionTimer?.cancel();
-    setState(() => _showInstructions = true);
-  }
-
-  void _resetView() {
-    setState(() {
-      _isImageLoading = true;
-      _viewerRevision++;
-    });
   }
 
   void _handleHotspot(HotspotModel hotspot) {
@@ -74,7 +44,6 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
       setState(() {
         _currentPanoramaId = targetId;
         _isImageLoading = true;
-        _viewerRevision++;
       });
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -120,7 +89,7 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
                 );
               },
               child: PanoramaViewer(
-                key: ValueKey('${panorama.id}-$_viewerRevision'),
+                key: ValueKey(panorama.id),
                 latitude: panorama.initialView.latitude,
                 longitude: panorama.initialView.longitude,
                 zoom: panorama.initialView.zoom,
@@ -180,18 +149,12 @@ class _PanoramaViewerScreenState extends State<PanoramaViewerScreen> {
             left: 16,
             right: 16,
             bottom: MediaQuery.paddingOf(context).bottom + 16,
-            child: _ViewerControls(
-              markerCount: panorama.hotspots.length,
-              onHelp: _showHelp,
-              onReset: _resetView,
-            ),
+            child: _ViewerControls(markerCount: panorama.hotspots.length),
           ),
           if (_isImageLoading)
             const Positioned.fill(
               child: IgnorePointer(child: _LoadingOverlay()),
             ),
-          if (_showInstructions)
-            ViewerInstructionOverlay(onDismiss: _dismissInstructions),
         ],
       ),
     );
@@ -247,15 +210,9 @@ class _ViewerAppBar extends StatelessWidget {
 }
 
 class _ViewerControls extends StatelessWidget {
-  const _ViewerControls({
-    required this.markerCount,
-    required this.onHelp,
-    required this.onReset,
-  });
+  const _ViewerControls({required this.markerCount});
 
   final int markerCount;
-  final VoidCallback onHelp;
-  final VoidCallback onReset;
 
   @override
   Widget build(BuildContext context) {
@@ -288,18 +245,6 @@ class _ViewerControls extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        const SizedBox(width: 10),
-        _RoundAction(
-          tooltip: 'Reset view',
-          icon: Icons.center_focus_strong,
-          onPressed: onReset,
-        ),
-        const SizedBox(width: 10),
-        _RoundAction(
-          tooltip: 'Show controls',
-          icon: Icons.help_outline_rounded,
-          onPressed: onHelp,
         ),
       ],
     );

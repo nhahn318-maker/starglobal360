@@ -10,8 +10,8 @@ Star Explorer 360 là ứng dụng tham quan không gian 360 độ được xây
 
 - File cài đặt: [`release/star-explorer-360-v1.0.0.apk`](release/star-explorer-360-v1.0.0.apk)
 - Phiên bản: `1.0.0+1`
-- Dung lượng: 23.416.079 byte (22,3 MB)
-- SHA-256: `B15E5AF0972199AE42AC047B240DC37A5FF2DB29C25D0E26E746282CF5B05623`
+- Dung lượng: 23.416.348 byte (22,3 MB)
+- SHA-256: `C9C476662445ACB660B81DD08D7AC7CEE758C0664D8A80482CEC4083F3E44C5F`
 - Android application ID: `com.nhahn.star_global_360`
 
 APK được build ở chế độ release và có thể cài trực tiếp để chấm bài.
@@ -27,9 +27,7 @@ APK được build ở chế độ release và có thể cài trực tiếp đ�
 - Vuốt để xoay góc nhìn.
 - Chụm hai ngón tay để phóng to hoặc thu nhỏ.
 - Hotspot giữ đúng vị trí khi panorama xoay hoặc zoom.
-- Có hướng dẫn thao tác lần đầu.
 - Có trạng thái tải ảnh, báo lỗi và thử lại.
-- Có nút đặt lại góc nhìn.
 - Giao diện Material 3 tối giản và responsive.
 - Có launcher icon riêng cho Android.
 - Dữ liệu và hình ảnh được lưu cục bộ, không cần Internet.
